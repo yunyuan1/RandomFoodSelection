@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>评级系统</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 50px;
+        }
+
+        .image {
+            width: 200px;
+            height: 200px;
+            transition: transform 0.3s ease;
+        }
+
+        .image:hover {
+            transform: scale(1.5);
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        .dish {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        input[type="url"] {
+            padding: 8px;
+            width: 100%;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+        }
+
+        .rating {
+            direction: rtl;
+            unicode-bidi: bidi-override;
+            display: inline-block;
+        }
+
+        .rating>label {
+            font-size: 30px;
+            color: #ddd;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        .rating>input {
+            display: none;
+        }
+
+        .rating>input:checked~label,
+        .rating>label:hover,
+        .rating>label:hover~label {
+            color: #f39c12;
+        }
+
+        button {
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .btn-secondary {
+            background-color: #f44336;
+        }
+
+        .btn-secondary:hover {
+            background-color: #e53935;
+        }
+
+        #result {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>物美价蠊餐馆</h1>
+
+    <div class="container">
+        <img src="C:/Users/liqing/Desktop/611/t2.jpg" alt="墨西哥塔克（拔厨精炒）" class="image" id="image1">
+        <img src="C:/Users/liqing/Desktop/611/jz.jpg" alt="古神菌子火锅（黄衣主厨）" class="image" id="image2">
+        <img src="C:/Users/liqing/Desktop/611/aaaa.jpg" alt="蟑螂肉粽（甜咸双拼款）" class="image" id="image3">
+    </div>
+
+    <form id="ratingForm">
+        <div class="dish">
+            <label for="dish1">墨西哥塔克（拔厨精炒）:</label>
+            <input type="text" id="dish1" name="dish1" placeholder="输入食用后的体验吧 嘘 用了什么原料可说不定哦">
+            <label>评分:</label>
+            <div class="rating">
+                <input type="radio" id="star5-1" name="rating1" value="5"><label for="star5-1">★</label>
+                <input type="radio" id="star4-1" name="rating1" value="4"><label for="star4-1">★</label>
+                <input type="radio" id="star3-1" name="rating1" value="3"><label for="star3-1">★</label>
+                <input type="radio" id="star2-1" name="rating1" value="2"><label for="star2-1">★</label>
+                <input type="radio" id="star1-1" name="rating1" value="1"><label for="star1-1">★</label>
+            </div>
+        </div>
+        <div class="dish">
+            <label for="dish2">古神菌子火锅（黄衣主厨）:</label>
+            <input type="text" id="dish2" name="dish2" placeholder="输入……古怪扭曲……火锅里好像隐藏着某种悄无声息的呢喃 ，那是人类语言无法表达的诡异语调， 让每一个瞥见它的生灵都感受到了理智的裂隙、、">
+            <label>评分:</label>
+            <div class="rating">
+                <input type="radio" id="star5-2" name="rating2" value="5"><label for="star5-2">★</label>
+                <input type="radio" id="star4-2" name="rating2" value="4"><label for="star4-2">★</label>
+                <input type="radio" id="star3-2" name="rating2" value="3"><label for="star3-2">★</label>
+                <input type="radio" id="star2-2" name="rating2" value="2"><label for="star2-2">★</label>
+                <input type="radio" id="star1-2" name="rating2" value="1"><label for="star1-2">★</label>
+            </div>
+        </div>
+        <div class="dish">
+            <label for="dish3">蟑螂肉粽（甜咸双拼款）:</label>
+            <input type="text" id="dish3" name="dish3" placeholder="输入您的食用评价 馅料超多超扎实 差评的话 小粽子要去你家找你哦">
+            <label>评分:</label>
+            <div class="rating">
+                <input type="radio" id="star5-3" name="rating3" value="5"><label for="star5-3">★</label>
+                <input type="radio" id="star4-3" name="rating3" value="4"><label for="star4-3">★</label>
+                <input type="radio" id="star3-3" name="rating3" value="3"><label for="star3-3">★</label>
+                <input type="radio" id="star2-3" name="rating3" value="2"><label for="star2-3">★</label>
+                <input type="radio" id="star1-3" name="rating3" value="1"><label for="star1-3">★</label>
+            </div>
+        </div>
+        <button type="button" onclick="submitRatings()">提交评级</button>
+        <button type="button" class="btn-secondary" onclick="resetForm()">重置表单</button>
+    </form>
+
+    <div id="result"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('ratingForm').addEventListener('input', function (event) {
+                if (event.target.tagName === 'INPUT' && event.target.type === 'text') {
+                    console.log('正在编辑:', event.target.value);
+                }
+            });
+        });
+
+        document.addEventListener('keydown', function (event) {
+            if (event.ctrlKey && event.key === 'p') {
+                event.preventDefault();
+                submitRatings();
+            }
+        });
+
+        function submitRatings() {
+            var dish1 = document.getElementById('dish1').value;
+            var rating1 = document.querySelector('input[name="rating1"]:checked') ? document.querySelector('input[name="rating1"]:checked').value : '未评分';
+
+            var dish2 = document.getElementById('dish2').value;
+            var rating2 = document.querySelector('input[name="rating2"]:checked') ? document.querySelector('input[name="rating2"]:checked').value : '未评分';
+
+            var dish3 = document.getElementById('dish3').value;
+            var rating3 = document.querySelector('input[name="rating3"]:checked') ? document.querySelector('input[name="rating3"]:checked').value : '未评分';
+
+            var resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = '<h2>评级结果</h2>' +
+                '<p>菜品 1: ' + dish1 + ' - 评分: ' + rating1 + '</p>' +
+                '<p>菜品 2: ' + dish2 + ' - 评分: ' + rating2 + '</p>' +
+                '<p>菜品 3: ' + dish3 + ' - 评分: ' + rating3 + '</p>';
+        }
+
+        function resetForm() {
+            document.getElementById('ratingForm').reset();
+            document.getElementById('result').innerHTML = '';
+        }
+    </script>
+
+</body>
+
+</html>
